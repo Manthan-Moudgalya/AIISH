@@ -1,0 +1,81 @@
+.container {
+    width: clamp(330px, 60vw, 450px);          
+    height: clamp(330px, 75vh, 950px);         
+    background-color: transparent;
+    backdrop-filter: blur(70px);
+    border-radius: 24px;
+    display: grid;
+    place-items: center;
+    font-family: var(--pop);
+    font-weight: 500;
+    font-size: clamp(20px, 2vw, 40px);         
+    padding: clamp(20px, 5vw, 50px);           
+    color: white;
+    box-sizing: border-box;               
+    margin: 0 auto;                            
+}
+
+.heading{
+    font-size: clamp(40px, 4vw, 100px);
+}
+
+input[type="email"]{
+    width: clamp(220px, 20vw, 900px);
+    height: clamp(40px);
+}
+
+.pass-container{
+    /* width: 70%;
+    height: 50px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inPass{
+    width: 68%;
+    position: absolute;
+}
+
+.subBtn{
+    width: clamp(150px, 1.3rem, 400px);
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    color: black;
+    font-weight: 500;
+    font-family: var(--pop);
+    font-size: 18px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.eye{
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    position: relative;
+    left: clamp(100px, 9vw, 150px);
+}
+
+input{
+    border-radius: 23px;
+    border: 2.5px solid black;
+    font-size: 20px;
+    padding-left: 20px ;
+    background-color: black;
+    color: white;
+    height: 45px;
+    width: clamp(220px, 20vw, 900px);
+    height: clamp(38px,5vw,40px);
+}
+
+
+input:focus{
+    outline: none;
+    border: 3px solid white;
+}
+

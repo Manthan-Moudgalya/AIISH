@@ -1,0 +1,20 @@
+body{
+    background-image: url("/bg.png");
+    background-size: cover;     
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-x: auto;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    /* height: 100%; */
+}
+
+.Application{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
