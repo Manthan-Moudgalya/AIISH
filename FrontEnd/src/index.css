@@ -3,12 +3,21 @@
 :root{
     --pop: poppins;
 }
+
+*{
+    user-select: none;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #000000 inset !important; 
+    -webkit-text-fill-color: white !important;
+}
+  
+
 body{
     height: 100vh;
     display: grid;
     place-items: center;
-    /* border: 10px solid yellow; */
     margin: 0px;
-    background-color: black;
-    /* font-family: var(--pop); */
+    font-family: var(--pop);
 }
