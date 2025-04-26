@@ -1,0 +1,5 @@
+# Auto-normalize text files
+* text=auto
+
+# Specifically ensure Node modules stay untouched (optional but good for node_modules)
+node_modules/** -text
