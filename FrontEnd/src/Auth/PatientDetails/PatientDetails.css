@@ -118,3 +118,22 @@ main{
     text-align: center;
     width: 400px;
 }
+
+#income {
+    display: flex;
+    /* border: 2px solid red; */
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
+
+#select-income{
+    background-color: black;
+    color: white;
+    width: 50%;
+    height: 40px;
+    border-radius: 23px;
+    outline: none;
+    text-align: center;
+    font-size: .65em;
+}

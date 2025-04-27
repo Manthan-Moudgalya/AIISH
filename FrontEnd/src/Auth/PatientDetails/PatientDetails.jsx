@@ -13,6 +13,8 @@ function PatientDetails() {
     const lang2Ref = useRef();
     const lang3Ref = useRef();
 
+    const incomeRef = useRef();
+
     const[takeAudio, setAudio] = useState(false);
     const[takeSLP, setSLP] = useState(false);
 
@@ -39,8 +41,10 @@ function PatientDetails() {
             const lang1 = lang1Ref.current.value;
             const lang2 = lang2Ref.current.value;
             const lang3 = lang3Ref.current.value;
+            const income = incomeRef.current.value;
+
             console.log(`${PhoneNumber} ${Password} \n${cleanedAadharNum}\n${email} 
-                \n${lang1} ${lang2} ${lang3} \nAudio: ${takeAudio} SLP: ${takeSLP}`);
+                \n${lang1} ${lang2} ${lang3} \nIncome ${income}\n Audio: ${takeAudio} SLP: ${takeSLP}`);
 
             try{
                 const response = await fetch('http://127.0.0.1:10001/patientDetails',{
@@ -50,7 +54,9 @@ function PatientDetails() {
                     },
 
                     body: JSON.stringify({
-                        PhoneNumber, Password, cleanedAadharNum, email, lang1, lang2, lang3, AudioLogist: takeAudio, SLPathologist: takeSLP
+                        PhoneNumber, Password, cleanedAadharNum, email, lang1, lang2, lang3, 
+                        totalIncome: income,
+                        AudioLogist: takeAudio, SLPathologist: takeSLP
                     })
                 })
 
@@ -86,8 +92,17 @@ function PatientDetails() {
                 
                 <div className="contact-container">
                     {/* <input type="text" id="phone-number" minLength={phoneNumLen} maxLength={phoneNumLen} placeholder='Phone Number' ref={phoneRef} required/> */}
-
                     <input type="email" id="email-ID" ref={emailRef} maxLength={emailLenght} placeholder='Email Address' required/>
+                    
+                    <div id="income">
+                        Income &nbsp;
+                        <select id="select-income" ref={incomeRef}> 
+                            <option value="under 30k">under 30k</option>
+                            <option value="under 20k">under 20k</option>
+                            <option value="under 10k">under 10k</option>
+                            
+                        </select>
+                    </div>
                 </div>
                 <div id="lang-pref">
                     Language Preference
