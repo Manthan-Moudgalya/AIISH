@@ -48,9 +48,9 @@ function Login() {
                 }) 
             })
             
-            alert("Response given!!!")
             const data = await response.json(); 
             console.log("Data: " + data.msg);
+            alert(data.msg)
             
 
         } catch(error){
