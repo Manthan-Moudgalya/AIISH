@@ -4,11 +4,9 @@ import './PatientDetails.css'
 function PatientDetails() {
 
     const aadharLength = 12;
-    const phoneNumLen = 10;
     const emailLenght = 30;
 
     const aadharRef = useRef();
-    const phoneRef = useRef();
     const emailRef = useRef();
 
     const lang1Ref = useRef();
@@ -28,26 +26,20 @@ function PatientDetails() {
 
     async function validate(){
         const aadharNumber = aadharRef.current.value;
-        const phoneNumber = phoneRef.current.value;
-
         aadharRef.current.style.border = "none";
-        phoneRef.current.style.border = "none";
 
         const cleanedAadharNum = aadharNumber.replace(/\D/g, '');
-        const cleanedPhoneNum = phoneNumber.replace(/\D/g, '');
-
         const aadharValid = cleanedAadharNum.length === aadharLength ;
-        const phoneNumValid = cleanedPhoneNum.length === phoneNumLen ;
 
-        if(aadharValid && phoneNumValid){
+        if(aadharValid){
             // alert("Valid");
-            const Username = localStorage.getItem('Username')
+            const PhoneNumber = localStorage.getItem('userPhoneNumber')
             const Password = localStorage.getItem('Password')
             const email = emailRef.current.value;
             const lang1 = lang1Ref.current.value;
             const lang2 = lang2Ref.current.value;
             const lang3 = lang3Ref.current.value;
-            console.log(`${Username} ${Password} \n${cleanedAadharNum} ${cleanedPhoneNum}\n${email} 
+            console.log(`${PhoneNumber} ${Password} \n${cleanedAadharNum}\n${email} 
                 \n${lang1} ${lang2} ${lang3} \nAudio: ${takeAudio} SLP: ${takeSLP}`);
 
             try{
@@ -58,7 +50,7 @@ function PatientDetails() {
                     },
 
                     body: JSON.stringify({
-                        Username, Password, cleanedAadharNum, cleanedPhoneNum, email, lang1, lang2, lang3, AudioLogist: takeAudio, SLPathologist: takeSLP
+                        PhoneNumber, Password, cleanedAadharNum, email, lang1, lang2, lang3, AudioLogist: takeAudio, SLPathologist: takeSLP
                     })
                 })
 
@@ -82,9 +74,6 @@ function PatientDetails() {
             aadharRef.current.style.border = "2px solid red";
         }
 
-        if(!phoneNumValid){
-            phoneRef.current.style.border = "2px solid red";
-        }
         alert("Not Valid Inputs");
     }
     
@@ -96,51 +85,53 @@ function PatientDetails() {
                 <input type="text" id="aadhar" ref={aadharRef} placeholder='Aadhar Number' minLength={aadharLength} maxLength={aadharLength} className='no-scroll' required/>
                 
                 <div className="contact-container">
-                    <input type="text" id="phone-number" minLength={phoneNumLen} maxLength={phoneNumLen} placeholder='Phone Number' ref={phoneRef} required/>
+                    {/* <input type="text" id="phone-number" minLength={phoneNumLen} maxLength={phoneNumLen} placeholder='Phone Number' ref={phoneRef} required/> */}
 
                     <input type="email" id="email-ID" ref={emailRef} maxLength={emailLenght} placeholder='Email Address' required/>
                 </div>
+                <div id="lang-pref">
+                    Language Preference
+                    <div id="languages">
+                        <select ref={lang1Ref} id="lang1" className='lang-opt'>
+                            <option value="English">English</option>
+                            <option value="Kannada">Kannada</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Malayalam">Malayalam</option>
+                        </select>
 
-                <div id="languages">
-                    <select ref={lang1Ref} id="lang1" className='lang-opt'>
-                        <option value="English">English</option>
-                        <option value="Kannada">Kannada</option>
-                        <option value="Hindi">Hindi</option>
-                        <option value="Tamil">Tamil</option>
-                        <option value="Telugu">Telugu</option>
-                        <option value="Malayalam">Malayalam</option>
-                    </select>
+                        <select ref={lang2Ref} id="lang2" className='lang-opt'>
+                            <option value="None">None</option>
+                            <option value="English">English</option>
+                            <option value="Kannada">Kannada</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Malayalam">Malayalam</option>
+                        </select>
 
-                    <select ref={lang2Ref} id="lang2" className='lang-opt'>
-                        <option value="None">None</option>
-                        <option value="English">English</option>
-                        <option value="Kannada">Kannada</option>
-                        <option value="Hindi">Hindi</option>
-                        <option value="Tamil">Tamil</option>
-                        <option value="Telugu">Telugu</option>
-                        <option value="Malayalam">Malayalam</option>
-                    </select>
-
-                    <select ref={lang3Ref} id="lang3" className='lang-opt'>
-                        <option value="None">None</option>
-                        <option value="English">English</option>
-                        <option value="Kannada">Kannada</option>
-                        <option value="Hindi">Hindi</option>
-                        <option value="Tamil">Tamil</option>
-                        <option value="Telugu">Telugu</option>
-                        <option value="Malayalam">Malayalam</option>
-                    </select>
+                        <select ref={lang3Ref} id="lang3" className='lang-opt'>
+                            <option value="None">None</option>
+                            <option value="English">English</option>
+                            <option value="Kannada">Kannada</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Malayalam">Malayalam</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div id='clinicians'>
                     <div id='checkBox-container'>
                         <input type="checkbox" checked={takeAudio} onChange={handleAudio} id="AudioLogist" />
-                        <label className='clinicians'>AudioLogist</label>
+                        <label className='clinicians'>AudioLogist (Hearing)</label>
                     </div>
 
                     <div id='checkBox-container'>
                         <input type="checkbox" checked={takeSLP} onChange={handleSLP} id="slp" />
-                        <label className='clinicians'>Speech-Language Pathologist</label>
+                        <label className='clinicians'>Speech-Language Pathologist (Speaking)</label>
                     </div>
                 </div>
             

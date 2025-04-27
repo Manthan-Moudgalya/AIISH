@@ -9,10 +9,11 @@ import './Login.css'
 
 function Login() {
 
-    const UsernameRef = useRef();
+    const PhoneNumberRef = useRef();
     const PasswordRef = useRef();
     const eyeRef = useRef();
 
+    const phoneNumLen = 10;
 
     function toggle(e){
         e.preventDefault();
@@ -26,9 +27,15 @@ function Login() {
     }
 
     async function sendRequest() {
-        const Username = UsernameRef.current.value;
+        const PhoneNumber = PhoneNumberRef.current.value;
         const Password = PasswordRef.current.value;
-        // console.log(Username, Password);
+        const cleanedPhoneNum = PhoneNumber.replace(/\D/g, '');
+        const phoneNumValid = cleanedPhoneNum.length === phoneNumLen ;
+        
+        if(!phoneNumValid){
+            alert("Enter Valid phone number")
+            return;
+        }
         
         try{
             const response = await fetch("http://127.0.0.1:10001/Login", {
@@ -36,7 +43,7 @@ function Login() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({  Username: `${Username}`,
+                body: JSON.stringify({  PhoneNumber: `${PhoneNumber}`,
                                 Password: `${Password}`
                 }) 
             })
@@ -57,7 +64,7 @@ function Login() {
         <main>
             <form className="container">
                 <div className="heading">Login</div>
-                <input type="text" placeholder={"Username"} ref={UsernameRef} required/>
+                <input type="text" placeholder={"Phone Number"} ref={PhoneNumberRef} maxLength={phoneNumLen} minLength={phoneNumLen} required/>
 
                 <div className="pass-container">
                     <input ref={PasswordRef} className="inPass" placeholder='Password' type="password" required/>
@@ -66,7 +73,6 @@ function Login() {
                     </button>
                 </div>
                 <div className="controls">
-                    {/* <span id='forget-text'>Forgot Password</span> */}
                     <div id='have-acc-login'>Don't have an Account?
                         <Link to="/SignUp" id='sign-up'> Sign UP </Link>
                     </div>

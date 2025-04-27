@@ -18,6 +18,8 @@ function SignUp() {
 
     const navigate = useNavigate();
 
+    const phoneNumLen = 10;
+
     function toggle(field, e){
 
         console.log(field);
@@ -42,28 +44,39 @@ function SignUp() {
             const errorBorder = "2px solid red";
             inputRef2.current.style.border = errorBorder; 
             inputRef1.current.style.border = errorBorder; 
-            
             setShowError(true);
             return;
         }
+
         // if passwords matches
         // setting the username and password
+
+        const PhoneNumber = userRef.current.value;
+        const cleanedPhoneNum = PhoneNumber.replace(/\D/g, '');
+        console.log("Manthan: " + cleanedPhoneNum);
         
-        const Username = userRef.current.value;
+        const phoneNumValid = cleanedPhoneNum.length === phoneNumLen ;
+        
+        if(!phoneNumValid){
+            alert("Enter Valid phone number")
+            return;
+        }
+
+        const userPhoneNumber = cleanedPhoneNum
         try{
             const response = await fetch("http://127.0.0.1:10001/SignUp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 }, 
-                body: JSON.stringify({Username})
+                body: JSON.stringify({userPhoneNumber})
             })
 
             if(response.ok){
                 const okMsg = await response.json();
                 alert(JSON.stringify(okMsg.msg));
                 // sets the username and password in local storage
-                localStorage.setItem("Username", Username);
+                localStorage.setItem("userPhoneNumber", userPhoneNumber);
                 localStorage.setItem("Password", password);
                 navigate("/PatientDetails");
                 console.log(JSON.stringify(okMsg.msg));
@@ -80,9 +93,6 @@ function SignUp() {
             console.log("error: " + error);
         }
 
-        // alert("Successfully submitted!!!")
-        // localStorage.setItem("Username", Username);
-        // localStorage.setItem("Password", password);
     }
     
     
@@ -90,7 +100,7 @@ function SignUp() {
         <main className='' >
             <div className="container">
                 <div className='heading'>Sign Up</div>
-                <input type="text" ref={userRef} placeholder="Username" id="" />
+                <input type="text" placeholder={"Phone Number"} ref={userRef} maxLength={phoneNumLen} minLength={phoneNumLen} required/>
 
                 <div className="pass-container">
                     <input ref={inputRef1} className="inPass" id='Pass'
