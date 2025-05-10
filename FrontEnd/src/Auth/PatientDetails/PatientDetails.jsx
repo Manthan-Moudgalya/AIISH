@@ -1,4 +1,5 @@
 import {useRef, useState} from 'react'
+import { useNavigate } from "react-router-dom";
 import './PatientDetails.css'
 
 function PatientDetails() {
@@ -17,6 +18,8 @@ function PatientDetails() {
 
     const[takeAudio, setAudio] = useState(false);
     const[takeSLP, setSLP] = useState(false);
+
+    const navigate = useNavigate();
 
     function handleAudio(event){
         setAudio(event.target.checked);
@@ -63,6 +66,7 @@ function PatientDetails() {
                 if(response.ok){
                     const data = await response.json();
                     alert(data.msg);
+                    navigate("/HomePage")
                     return;
                 }
                 

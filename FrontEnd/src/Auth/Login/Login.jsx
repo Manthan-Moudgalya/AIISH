@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 import eyeClose from './images/eye-close.png'
 import eyeOpen from './images/eye-open.png'
 import './Login.css'
@@ -12,8 +12,8 @@ function Login() {
     const PhoneNumberRef = useRef();
     const PasswordRef = useRef();
     const eyeRef = useRef();
-
     const phoneNumLen = 10;
+    const navigate = useNavigate();
 
     function toggle(e){
         e.preventDefault();
@@ -48,10 +48,17 @@ function Login() {
                 }) 
             })
             
+            if(response.ok){
+                navigate("/HomePage");
+                const data = await response.json(); 
+                console.log("Data: " + data.msg);
+                alert(data.msg);
+                return;
+            } 
+
             const data = await response.json(); 
             console.log("Data: " + data.msg);
-            alert(data.msg)
-            
+            alert(data.msg);
 
         } catch(error){
             console.log(`Error: ${error}`);
@@ -81,7 +88,7 @@ function Login() {
                 <button type="submit" className='subBtn' onClick={(e) => {
                     e.preventDefault();
                     sendRequest();}}> Submit</button>
-
+                {/* <button className='w-20'>Hellow!!</button> */}
             </form>
         </main>
     )

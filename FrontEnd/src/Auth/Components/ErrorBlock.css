@@ -1,7 +1,6 @@
 .error-container{
     width: clamp(16.875rem, 10.713rem + 26.291vw, 34.375rem);
     height: 350px;
-
     position: absolute;
     top: 50%;
     left: 50%;
@@ -48,11 +47,15 @@
     color: black;
     font-weight: 500;
     font-family: var(--pop);
-    font-size: 18px;
+    font-size: 20px;
     background-color: white;
     cursor: pointer;
     /* position: relative; */
     animation: ease-in-out 3s;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .error-btn:active{
