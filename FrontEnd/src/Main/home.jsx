@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Navbar from './Components/Navbar';
 import Sidebar from './Components/Sidebar';
 import SearchBar from './Components/SearchBar';
@@ -7,6 +7,8 @@ import Card from './Components/Card';
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const user = "Johan Seong";
+
+
 
   return (
     <div className="min-h-screen w-{100%} bg-gray-100">

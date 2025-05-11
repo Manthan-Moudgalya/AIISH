@@ -1,7 +1,6 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-
 import ErrorBlock from '../Components/ErrorBlock';
 import eyeClose from './images/eye-close.png'
 import eyeOpen from './images/eye-open.png'
@@ -15,11 +14,16 @@ function SignUp() {
     const inputRef2 = useRef();
     const eyeRef1 = useRef();
     const eyeRef2 = useRef();
+    const patientNameRef = useRef();
 
     const navigate = useNavigate();
 
     const phoneNumLen = 10;
 
+    useEffect(() => {
+        document.title = "AIISH SignUP";
+    }, []); 
+    
     function toggle(field, e){
 
         console.log(field);
@@ -39,7 +43,7 @@ function SignUp() {
 
         const password = inputRef1.current.value.trim();
         const confirm = inputRef2.current.value.trim();
-        
+        // console.log("name: " + patientName_)
         if(password !== confirm){
             const errorBorder = "2px solid red";
             inputRef2.current.style.border = errorBorder; 
@@ -47,18 +51,26 @@ function SignUp() {
             setShowError(true);
             return;
         }
+        const patientName = patientNameRef.current.value;
 
         // if passwords matches
         // setting the username and password
 
         const PhoneNumber = userRef.current.value;
         const cleanedPhoneNum = PhoneNumber.replace(/\D/g, '');
-        console.log("Manthan: " + cleanedPhoneNum);
+        // const patientName = patientName_.replace(/\D/g, '');
+        console.log("patientName: " + patientName);
         
         const phoneNumValid = cleanedPhoneNum.length === phoneNumLen ;
         
         if(!phoneNumValid){
             alert("Enter Valid phone number")
+            return;
+        }
+
+        if(patientName.length < 4){
+            alert(`Enter proper Name ${patientName}`);
+            console.log(`Enter proper Name ${patientName}`);
             return;
         }
 
@@ -78,6 +90,7 @@ function SignUp() {
                 // sets the username and password in local storage
                 localStorage.setItem("userPhoneNumber", userPhoneNumber);
                 localStorage.setItem("Password", password);
+                localStorage.setItem("patientName", patientName);
                 navigate("/PatientDetails");
                 console.log(JSON.stringify(okMsg.msg));
                 return;
@@ -101,6 +114,9 @@ function SignUp() {
             <div className="container">
                 <div className='heading'>Sign Up</div>
                 <input type="text" placeholder={"Phone Number"} ref={userRef} maxLength={phoneNumLen} minLength={phoneNumLen} required/>
+
+                <input type="text"  placeholder='Enter Full name' maxLength={50} minLength={4}   
+                ref={patientNameRef} required />
 
                 <div className="pass-container">
                     <input ref={inputRef1} className="inPass" id='Pass'

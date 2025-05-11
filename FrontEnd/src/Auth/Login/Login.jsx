@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import eyeClose from './images/eye-close.png'
@@ -14,6 +14,11 @@ function Login() {
     const eyeRef = useRef();
     const phoneNumLen = 10;
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.title = "AIISH Login";
+    }, []); 
+    
 
     function toggle(e){
         e.preventDefault();
@@ -88,7 +93,6 @@ function Login() {
                 <button type="submit" className='subBtn' onClick={(e) => {
                     e.preventDefault();
                     sendRequest();}}> Submit</button>
-                {/* <button className='w-20'>Hellow!!</button> */}
             </form>
         </main>
     )

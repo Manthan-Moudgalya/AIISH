@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react'
+import {useRef, useState, useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import './PatientDetails.css'
 
@@ -15,6 +15,7 @@ function PatientDetails() {
     const lang3Ref = useRef();
 
     const incomeRef = useRef();
+    const checkContainerRef = useRef();
 
     const[takeAudio, setAudio] = useState(false);
     const[takeSLP, setSLP] = useState(false);
@@ -25,6 +26,10 @@ function PatientDetails() {
         setAudio(event.target.checked);
     }
 
+    useEffect(() => {
+        document.title = "AIISH Details";
+    }, []); 
+
     function handleSLP(e){
         setSLP(e.target.checked);
     }
@@ -32,7 +37,8 @@ function PatientDetails() {
     async function validate(){
         const aadharNumber = aadharRef.current.value;
         aadharRef.current.style.border = "none";
-
+        checkContainerRef.current.style.border = "none";
+        
         const cleanedAadharNum = aadharNumber.replace(/\D/g, '');
         const aadharValid = cleanedAadharNum.length === aadharLength ;
 
@@ -40,11 +46,19 @@ function PatientDetails() {
             // alert("Valid");
             const PhoneNumber = localStorage.getItem('userPhoneNumber')
             const Password = localStorage.getItem('Password')
+            const patientName = localStorage.getItem("patientName");
             const email = emailRef.current.value;
             const lang1 = lang1Ref.current.value;
             const lang2 = lang2Ref.current.value;
             const lang3 = lang3Ref.current.value;
             const income = incomeRef.current.value;
+
+            if(!takeAudio && !takeSLP){
+                alert("Choose Atleast One");
+                checkContainerRef.current.style.border = "3px solid red";
+                checkContainerRef.current.style.borderRadius = "24px";
+                return;
+            }
 
             console.log(`${PhoneNumber} ${Password} \n${cleanedAadharNum}\n${email} 
                 \n${lang1} ${lang2} ${lang3} \nIncome ${income}\n Audio: ${takeAudio} SLP: ${takeSLP}`);
@@ -58,7 +72,7 @@ function PatientDetails() {
 
                     body: JSON.stringify({
                         PhoneNumber, Password, cleanedAadharNum, email, lang1, lang2, lang3, 
-                        totalIncome: income,
+                        totalIncome: income, patientName,
                         AudioLogist: takeAudio, SLPathologist: takeSLP
                     })
                 })
@@ -82,6 +96,7 @@ function PatientDetails() {
 
         if(!aadharValid){
             aadharRef.current.style.border = "2px solid red";
+            aadharRef.current.style.border= "2px solid red";
         }
 
         alert("Not Valid Inputs");
@@ -142,7 +157,7 @@ function PatientDetails() {
                     </div>
                 </div>
 
-                <div id='clinicians'>
+                <div id='clinicians' className="p-[20px]" ref={checkContainerRef}>
                     <div id='checkBox-container'>
                         <input type="checkbox" checked={takeAudio} onChange={handleAudio} id="AudioLogist" />
                         <label className='clinicians'>AudioLogist (Hearing)</label>
@@ -154,6 +169,7 @@ function PatientDetails() {
                     </div>
                 </div>
             
+                
                 <button type="submit" id='patient-subBtn' onClick={validate} >Submit</button>
             </div>
         </main>
