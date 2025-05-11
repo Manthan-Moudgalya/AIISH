@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import Auth from './Routes/Auth.mjs';
+import serverless from 'serverless-http';
 
 const app = express();
 
@@ -24,7 +25,8 @@ app.use(Auth);
 //   console.log(`Server running on port ${port}`);
 // });
 
-export default app;
+export const handler = serverless(app); 
+
 
 // import express from 'express';
 // import cors from 'cors'; 
