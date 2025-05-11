@@ -15,4 +15,5 @@
     { "src": "/api/(.*)", "dest": "/api/index.mjs" },
     { "src": "/(.*)", "dest": "/src/$1" }
   ]
+
 }
