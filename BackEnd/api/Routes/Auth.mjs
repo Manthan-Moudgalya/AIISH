@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import patientModel from '../Schema/patientSchema.mjs';
-// import { model } from 'mongoose';
 import encryptPassword from '../Encryption/encrypt.mjs';
 import connectDB from '../Database/db.mjs';
 import isPasswordCorrect from '../Encryption/comparePass.mjs';
