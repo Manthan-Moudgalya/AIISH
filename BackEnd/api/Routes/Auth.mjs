@@ -5,11 +5,11 @@ import encryptPassword from '../Encryption/encrypt.mjs';
 import connectDB from '../Database/db.mjs';
 import isPasswordCorrect from '../Encryption/comparePass.mjs';
 
-await connectDB();
 
 const router = Router();
 
 router.post("/Login", async (req, res) => {
+    await connectDB();
 
     const { PhoneNumber, Password } = req.body;
     
@@ -34,6 +34,7 @@ router.post("/Login", async (req, res) => {
 router.post("/SignUp", async (req, res) => {
     const { userPhoneNumber } = req.body;
     // console.log("Request Phone Number: " + userPhoneNumber);
+    await connectDB();
     const existingPatient = await patientModel.findOne({ phoneNumber: userPhoneNumber });
 
     if(existingPatient !== null){
@@ -48,6 +49,7 @@ router.post("/SignUp", async (req, res) => {
 
 router.post('/patientDetails', async (req, res) => {
     // const { Username } = req.body;
+    await connectDB();
     const { PhoneNumber, Password, cleanedAadharNum,
         email, lang1, lang2, lang3,
         totalIncome,AudioLogist,

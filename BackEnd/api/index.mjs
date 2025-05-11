@@ -1,24 +1,49 @@
 import express from 'express';
-import cors from 'cors'; 
+import cors from 'cors';
 import bodyParser from 'body-parser';
-import Auth from './Routes/Auth.mjs'
+import Auth from './Routes/Auth.mjs';
 
 const app = express();
-const PORT = 10001;
 
-
-// 1st body Parser so that it parses the body (body undefined error) 
+// Parse JSON request bodies
 app.use(bodyParser.json());
-// 2nd for Cross-Origin Resource Sharing
+
+// Enable CORS
 app.use(cors());
-// use the Login
+
+// Mount auth routes
 app.use(Auth);
 
-app.get('/test', (req, res) => {
-    console.log("Test route hit");
-    res.send("Test successful");
-});
+// for localhost
+// app.use(cors({
+//   origin: 'http://localhost:10001',  URL
+// }));
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// const port = process.env.PORT || 10001;
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`);
+// });
+
+export default app;
+
+// import express from 'express';
+// import cors from 'cors'; 
+// import bodyParser from 'body-parser';
+// import Auth from './Routes/Auth.mjs'
+
+// const app = express();
+// const PORT = 10001;
+
+
+// // 1st body Parser so that it parses the body (body undefined error) 
+// app.use(bodyParser.json());
+// // 2nd for Cross-Origin Resource Sharing
+// app.use(cors());
+// // use the Login
+// app.use(Auth);
+
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
+
+// export default app;
