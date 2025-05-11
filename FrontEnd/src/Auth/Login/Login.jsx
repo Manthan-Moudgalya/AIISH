@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import eyeClose from './images/eye-close.png'
 import eyeOpen from './images/eye-open.png'
 import './Login.css'
+// import dotenv from 'dotenv';
 
+// dotenv.config();
 
 
 function Login() {
 
+    const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
     const PhoneNumberRef = useRef();
     const PasswordRef = useRef();
     const eyeRef = useRef();
@@ -42,8 +45,10 @@ function Login() {
             return;
         }
         
+        // console.log("Base URL: " + BASE_URL);
+        
         try{
-            const response = await fetch("http://127.0.0.1:10001/Login", {
+            const response = await fetch(`${BASE_URL}/Login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

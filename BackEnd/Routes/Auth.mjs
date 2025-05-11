@@ -33,14 +33,14 @@ router.post("/Login", async (req, res) => {
 
 router.post("/SignUp", async (req, res) => {
     const { userPhoneNumber } = req.body;
-    console.log("Request Phone Number: " + userPhoneNumber);
+    // console.log("Request Phone Number: " + userPhoneNumber);
     const existingPatient = await patientModel.findOne({ phoneNumber: userPhoneNumber });
 
     if(existingPatient !== null){
         return res.status(409).json({ msg: "Phone number already exists!!" });
     }
 
-    console.log("Here: "+ existingPatient);
+    // console.log("Here: "+ existingPatient);
     return res.status(201).json({ msg: "Account has been created!!!" })
     
 })

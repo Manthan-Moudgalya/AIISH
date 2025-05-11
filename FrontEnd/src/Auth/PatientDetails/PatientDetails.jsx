@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './PatientDetails.css'
 
 function PatientDetails() {
+    const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
 
     const aadharLength = 12;
     const emailLenght = 30;
@@ -64,7 +65,7 @@ function PatientDetails() {
                 \n${lang1} ${lang2} ${lang3} \nIncome ${income}\n Audio: ${takeAudio} SLP: ${takeSLP}`);
 
             try{
-                const response = await fetch('http://127.0.0.1:10001/patientDetails',{
+                const response = await fetch(`${BASE_URL}/patientDetails`,{
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -80,7 +81,9 @@ function PatientDetails() {
                 if(response.ok){
                     const data = await response.json();
                     alert(data.msg);
+                    localStorage.removeItem("Password")
                     navigate("/HomePage")
+
                     return;
                 }
                 

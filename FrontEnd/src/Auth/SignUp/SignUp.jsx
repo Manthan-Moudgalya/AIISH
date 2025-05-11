@@ -7,6 +7,8 @@ import eyeOpen from './images/eye-open.png'
 import './SignUp.css'
 
 function SignUp() {
+
+    const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
     const[showError, setShowError] = useState(false);
 
     const userRef = useRef();
@@ -40,6 +42,8 @@ function SignUp() {
     }
 
     async function validate(){
+
+        console.log("Base URL: " + BASE_URL);
 
         const password = inputRef1.current.value.trim();
         const confirm = inputRef2.current.value.trim();
@@ -76,7 +80,7 @@ function SignUp() {
 
         const userPhoneNumber = cleanedPhoneNum
         try{
-            const response = await fetch("http://127.0.0.1:10001/SignUp", {
+            const response = await fetch(`${BASE_URL}/SignUp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
