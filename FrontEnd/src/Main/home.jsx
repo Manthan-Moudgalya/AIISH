@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Navbar from './Components/Navbar';
-import Sidebar from './Components/Sidebar';
+import Navbar from './Components/NavBar';
+import Sidebar from './Components/SideBar';
 import SearchBar from './Components/SearchBar';
 import Card from './Components/Card';
 
