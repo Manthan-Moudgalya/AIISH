@@ -7,7 +7,7 @@ import serverless from 'serverless-http';
 const app = express();
 
 // Parse JSON request bodies
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Enable CORS
 app.use(cors());
@@ -25,7 +25,7 @@ app.use(Auth);
 //   console.log(`Server running on port ${port}`);
 // });
 
-export const handler = serverless(app); 
+// export const handler = serverless(app); 
 
 
 // import express from 'express';
