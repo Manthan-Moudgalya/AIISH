@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 // Mount auth routes
-app.use(Auth);
+app.use('/api',Auth);
 
 // for localhost
 // app.use(cors({
@@ -25,7 +25,7 @@ app.use(Auth);
 //   console.log(`Server running on port ${port}`);
 // });
 
-// export const handler = serverless(app); 
+export const handler = serverless(app); 
 
 
 // import express from 'express';

@@ -3,7 +3,7 @@
   "installCommand": "npm install --legacy-peer-deps",
   "builds": [
     {
-      "src": "api/index.mjs",
+      "src": "/api/index.mjs",
       "use": "@vercel/node"
     },
     {
