@@ -45,10 +45,9 @@ function Login() {
             return;
         }
         
-        // console.log("Base URL: " + BASE_URL);
         
         try{
-            const response = await fetch(`${BASE_URL}/Login`, {
+            const response = await fetch(`${BASE_URL}/api/Login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -58,17 +57,26 @@ function Login() {
                 }) 
             })
             
-            if(response.ok){
-                navigate("/HomePage");
-                const data = await response.json(); 
-                console.log("Data: " + data.msg);
+            const data = await response.json(); // ✅ only once
+
+            if (!response.ok) {
+                console.log("Error: " + data.msg);
                 alert(data.msg);
                 return;
-            } 
+            }
 
-            const data = await response.json(); 
-            console.log("Data: " + data.msg);
-            alert(data.msg);
+            try {
+                console.log(data.token);
+                console.log(JSON.stringify(data.patient));
+
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('patient', JSON.stringify(data.patient));
+            } catch (err) {
+                console.error("localStorage error:", err);
+            }   
+
+            // alert(data.msg);
+            navigate("/HomePage");
 
         } catch(error){
             console.log(`Error: ${error}`);

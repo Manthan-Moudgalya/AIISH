@@ -1,18 +1,19 @@
 import React from 'react';
+import avatarImg from './assets/account_circle.png'
 
 const Navbar = ({ user, onProfileClick }) => (
   <nav className="bg-white shadow flex items-center justify-between px-6 py-4">
     {/* <div className="text-xl font-bold">AI Health Assist ant</div> */}
     <div className="w-full flex justify-between items-center">
       <img 
-        src="https://via.placeholder.com/40" 
+        src={avatarImg}
         alt="Profile" 
         className="w-10 h-10 rounded-full cursor-pointer"
         onClick={onProfileClick}
       />
 
       <span className='font-bold text-[1.8em]' >Home Page</span>
-      <span className="text-gray-700">Hi {user}!</span>
+      <span className="text-gray-700 text-[1.2em]">Hi <span className='font-bold '>{user}!</span></span>
     </div>
   </nav>
 );

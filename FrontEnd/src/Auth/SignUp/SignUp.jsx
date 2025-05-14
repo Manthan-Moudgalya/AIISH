@@ -80,7 +80,7 @@ function SignUp() {
 
         const userPhoneNumber = cleanedPhoneNum
         try{
-            const response = await fetch(`${BASE_URL}/SignUp`, {
+            const response = await fetch(`${BASE_URL}/api/SignUp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

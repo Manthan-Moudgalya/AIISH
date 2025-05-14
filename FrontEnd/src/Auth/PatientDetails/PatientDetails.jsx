@@ -65,7 +65,7 @@ function PatientDetails() {
                 \n${lang1} ${lang2} ${lang3} \nIncome ${income}\n Audio: ${takeAudio} SLP: ${takeSLP}`);
 
             try{
-                const response = await fetch(`${BASE_URL}/patientDetails`,{
+                const response = await fetch(`${BASE_URL}/api/patientDetails`,{
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
