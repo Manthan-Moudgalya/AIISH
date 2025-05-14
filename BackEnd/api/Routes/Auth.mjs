@@ -3,7 +3,7 @@ import patientModel from '../Schema/patientSchema.mjs';
 import encryptPassword from '../Encryption/encrypt.mjs';
 import connectDB from '../Database/db.mjs';
 import isPasswordCorrect from '../Encryption/comparePass.mjs';
-import { generateToken } from '../Utils/jwtUtils.mjs'; // JWT utils
+import { generateToken } from '../Utils/jwtUtils.mjs'; 
 import authenticatePatient from './authenticatePatient.mjs';
 
 
@@ -49,7 +49,6 @@ router.post("/Login", async (req, res) => {
 });
 
 router.get('/appointments', authenticatePatient, async (req, res) => {
-    // Only logged-in patients can access this
     console.log('User ID:', req.user.id);
     res.json({ msg: 'Appointments visible to patient' });
 });
