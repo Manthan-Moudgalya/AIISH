@@ -1,0 +1,33 @@
+.slot-matrix-container {
+  width: 99%;
+}
+
+.slot-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.slot-table th,
+.slot-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  min-width: 80px;
+}
+
+.date-cell {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  white-space: nowrap;
+}
+
+.appointed {
+  background-color: #4A90E2; 
+}
+
+.available {
+  background-color: white;
+}
+

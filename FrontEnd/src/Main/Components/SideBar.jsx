@@ -23,27 +23,3 @@ const Sidebar = ({ onClose }) => {
   )
 }
 export default Sidebar;
-
-// import React from 'react'
-// const SideBar = ({ isOpen, toggleSidebar }) => {
-//     return (
-//         <div
-//           className={`fixed top-0 right-0 h-full w-64 bg-gray-800 text-white transform ${
-//             isOpen ? 'translate-x-0' : 'translate-x-full'
-//           } transition-transform duration-300 ease-in-out`}
-//         >
-//           <div className="p-4">
-//             <button onClick={toggleSidebar} className="text-white mb-4">
-//               Close
-//             </button>
-//             <ul>
-//               <li className="py-2"><a href="#" className="hover:text-gray-300">Profile</a></li>
-//               <li className="py-2"><a href="#" className="hover:text-gray-300">Settings</a></li>
-//               <li className="py-2"><a href="#" className="hover:text-gray-300">Logout</a></li>
-//             </ul>
-//           </div>
-//         </div>
-//       );
-// }
-
-// export default SideBar

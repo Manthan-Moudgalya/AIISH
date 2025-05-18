@@ -1,10 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css'
 import Login from './Auth/Login/Login'
 import SignUp from './Auth/SignUp/SignUp'
 import Home from './Main/home.jsx'
 import PatientDetails from './Auth/PatientDetails/PatientDetails'
 import PatientDashboard from './patientDashboard/patientDashboard';
-import './App.css'
+import DoctorLogin from './pages/Doctors/DoctorLogin.jsx';
+import DoctorSignup from './pages/Doctors/DoctorSignup.jsx';
+import DoctorDashBoard from './pages/Doctors/docDashBoard/DoctorDashboard.jsx'
+import AdminLogin from './pages/Admin/AdminLogin.jsx';
+import AdminDashboard from './pages/Admin/AdminDashBoard/AdminDashboard.jsx';
 
 function App() {
     return (
@@ -14,7 +19,15 @@ function App() {
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/PatientDetails" element={<PatientDetails />} />
             <Route path="/HomePage" element={<Home/>} />
-            <Route path="/patientDashboard" element={<PatientDashboard/>} />
+            <Route path="/PatientDashboard" element={<PatientDashboard/>} />
+
+            <Route path="/DoctorSignup" element={<DoctorSignup/>} />
+            <Route path="/DoctorLogin" element={<DoctorLogin/>} />
+            <Route path="/DoctorDashBoard" element={<DoctorDashBoard/>} />
+
+            <Route path="/AdminLogin" element={<AdminLogin/>} />
+            <Route path="/AdminDashboard" element={<AdminDashboard/>} />
+
         </Routes>
     </Router>
     );

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from './Components/NavBar';
 import Sidebar from './Components/SideBar';
 import Card from './Components/Card';
+import ChatBot from './Components/chatBot'
 
 const HomePage = () => {
 
@@ -15,46 +16,50 @@ const HomePage = () => {
   const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
   
   const stored = localStorage.getItem("patient");
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     if (stored) {
       const user = JSON.parse(stored); 
       if (user.name) {
+        // console.log(user.name);
         setUserName(user.name);
       }
     }
   }, [stored]);
 
-  // Function to fetch user data from the protected API endpoint
+ 
+
   useEffect(() => {
-    const token = localStorage.getItem("token"); 
-    if(!token){
-        navigate('/'); 
-        return; 
-    }  
-    
-    fetch(`${BASE_URL}/api/appointments`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`, 
-      },
+  if (!token) {
+    navigate('/')
+    return
+  };
+
+  fetch(`${BASE_URL}/api/appointments`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Failed to fetch data');
     })
-      .then((response) => {
-        if (response.ok) {
-          return response.json(); 
-        }
-        throw new Error('Failed to fetch data');
-      })
-      .then((data) => {
-        setUserData(data); 
-      })
-      .catch((error) => {
-        setError(error.message); 
-      });
-    
-  }, [navigate]); 
+    .then((data) => {
+      setUserData(data);
+    })
+    .catch((error) => {
+      setError(error.message);
+    });
+}, [token]); 
+
 
   return (
     <div className="min-h-screen w-full bg-gray-100">
+      <ChatBot/>
       <Navbar user={userName} onProfileClick={() => setSidebarOpen(true)} />
       {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}
       

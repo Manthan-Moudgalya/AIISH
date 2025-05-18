@@ -101,6 +101,13 @@ function Login() {
                     <div id='have-acc-login'>Don't have an Account?
                         <Link to="/SignUp" id='sign-up'> Sign UP </Link>
                     </div>
+                    <div id='have-acc-login'> Doctor?
+                        <Link to="/DoctorSignup" id='sign-up'> Sign UP </Link>
+                    </div>
+
+                    <div id='have-acc-login'> Admin?
+                        <Link to="/AdminLogin" id='sign-up'> Sign UP </Link>
+                    </div>
                 </div>
 
                 <button type="submit" className='subBtn' onClick={(e) => {

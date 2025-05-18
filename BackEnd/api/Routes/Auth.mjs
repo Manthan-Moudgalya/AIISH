@@ -53,7 +53,6 @@ router.get('/appointments', authenticatePatient, async (req, res) => {
     res.json({ msg: 'Appointments visible to patient' });
 });
 
-
 router.post("/SignUp", async (req, res) => {
     const { userPhoneNumber } = req.body;
     await connectDB();
@@ -91,11 +90,6 @@ router.post('/patientDetails', async (req, res) => {
     console.log("Saved Patient Details: " + savePatient);
     return res.status(201).json({ msg: `Patient registered with ${PhoneNumber}`});
 })
-
-router.get('/test', (req, res) => {
-    console.log("Test route hit");
-    res.status(202).send({msg: "Test successful"});
-});
 
 
 export default router;

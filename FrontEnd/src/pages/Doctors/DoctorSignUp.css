@@ -1,0 +1,183 @@
+/* DoctorSignUp.css */
+
+#aiish-background {
+  background-image: url("/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow-x: auto;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#heading{
+  font-size: 50px;
+  color: white;
+}
+
+#signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  backdrop-filter: blur(90px);
+  -webkit-backdrop-filter: blur(90px); 
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  height: 650px;
+  padding: 40px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.3s ease;
+  position: relative; 
+  z-index: 1; 
+  gap: 3em;
+}
+
+.signup-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid red; */
+}
+
+#form-tag{
+  gap: 30px;
+  height: 400px;
+  /* border: 2px solid blue; */
+  display: grid;
+  place-items: center;
+}
+
+.signup-form h2 {
+  color: #fff;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 8px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-alert {
+  background-color: rgba(255, 99, 71, 0.2);
+  border-left: 4px solid tomato;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.doc-type-sel{
+  display: grid;
+  place-items: center ;
+}
+
+
+.input-group input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.input-group input:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.signup-button {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.signup-button:hover {
+  background: linear-gradient(to right, #5a0fc0, #1f6aed);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.login-link {
+  text-align: center;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.login-link p {
+  margin: 0;
+}
+
+#login-link {
+  color: #64e9ff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+#login-link:hover {
+  color: #a0f0ff;
+  text-decoration: underline;
+}
+
+/* Add fallback for browsers without backdrop-filter support */
+@supports not ((backdrop-filter: blur(90px)) or (-webkit-backdrop-filter: blur(90px))) {
+  #signup-container {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #signup-container {
+    width: 95%;
+    padding: 30px 15px;
+  }
+  
+  .signup-form h2 {
+    font-size: 1.7rem;
+  }
+}

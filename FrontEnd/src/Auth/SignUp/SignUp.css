@@ -13,8 +13,24 @@ main{
     align-items: center;
 }
 
+input{
+    text-align: center;
+}
+
+#signUpForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* border: 2px solid red; */
+    height: 100% ;
+    gap: 1em;
+}
 
 .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: clamp(330px, 70vw, 550px);          
     height: clamp(330px, 90vh, 950px);         
     background-color: transparent;
