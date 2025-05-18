@@ -4,7 +4,7 @@ import Navbar from './Components/NavBar';
 import Sidebar from './Components/SideBar';
 import Card from './Components/Card';
 import ChatBot from './Components/chatBot'
-
+import './home.css'
 const HomePage = () => {
 
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const HomePage = () => {
 
 
   return (
-    <div className="min-h-screen w-full bg-gray-100">
+    <div className="min-h-screen w-full bg-gray-100" id="home-page">
       <ChatBot/>
       <Navbar user={userName} onProfileClick={() => setSidebarOpen(true)} />
       {sidebarOpen && <Sidebar onClose={() => setSidebarOpen(false)} />}

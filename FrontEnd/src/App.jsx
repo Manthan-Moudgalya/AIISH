@@ -10,6 +10,8 @@ import DoctorSignup from './pages/Doctors/DoctorSignup.jsx';
 import DoctorDashBoard from './pages/Doctors/docDashBoard/DoctorDashboard.jsx'
 import AdminLogin from './pages/Admin/AdminLogin.jsx';
 import AdminDashboard from './pages/Admin/AdminDashBoard/AdminDashboard.jsx';
+import PatientOverviewPage from './Main/PatientOverviewPage.jsx';
+import WellnessTips from './Main/WellnessTips.jsx';
 
 function App() {
     return (
@@ -20,6 +22,8 @@ function App() {
             <Route path="/PatientDetails" element={<PatientDetails />} />
             <Route path="/HomePage" element={<Home/>} />
             <Route path="/PatientDashboard" element={<PatientDashboard/>} />
+            <Route path="/PatientOverviewPage" element={<PatientOverviewPage/>} />
+            <Route path="/WellnessTips" element={<WellnessTips/>} />
 
             <Route path="/DoctorSignup" element={<DoctorSignup/>} />
             <Route path="/DoctorLogin" element={<DoctorLogin/>} />
