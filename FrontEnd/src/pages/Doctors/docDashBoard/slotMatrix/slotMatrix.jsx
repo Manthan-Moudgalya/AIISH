@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 
 const timeSlots = [
   '09:00 - 09:45 AM', '09:45 - 10:30 AM', '10:30 - 11:15 AM', '11:30 - 12:15 PM',
-  '12:15 - 1:00 PM', '02:00 - 02:45 PM', '02:45 - 03:30 PM', '03:45 - 04:30 PM', '04:30 - 05:15 PM'
+  '12:15 - 01:00 PM', '02:00 - 02:45 PM', '02:45 - 03:30 PM', '03:45 - 04:30 PM',
+  '04:30 - 05:15 PM'
 ];
 
 const appointmentStatusColors = {
@@ -65,25 +66,46 @@ const getDayName = (dateStr) => {
   return new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short' });
 };
 
+// Normalize time slot to handle single-digit hours
+const normalizeTimeSlot = (time) => {
+  if (!time) return time;
+  // Normalize single-digit hours to two-digit (e.g., 5:15 PM -> 05:15 PM)
+  return time.replace(
+    /(\d{1,2}):(\d{2}\s*-\s*)(\d{1,2}):(\d{2}\s*[AP]M)/,
+    (match, h1, m1, h2, m2) => {
+      return `${h1.padStart(2, '0')}:${m1}${h2.padStart(2, '0')}:${m2}`;
+    }
+  );
+};
+
 // Convert appointments to matrix
-const convertToMatrix = (appointments) => {
+const convertToMatrix = (appointments, setInvalidAppointments) => {
   const matrix = {};
+  const invalidAppointments = [];
 
   appointments.forEach(({ date, time, patientName, disorderType, status, createdAt, _id }) => {
     const normalizedDate = formatToYMD(date);
     if (!normalizedDate) {
       console.warn('Invalid date found:', date);
+      invalidAppointments.push({ date, time, patientName, _id });
       return;
     }
-    const index = timeSlots.findIndex(slot => slot === time);
+    const normalizedTime = normalizeTimeSlot(time?.trim());
+    const index = timeSlots.findIndex(slot => slot === normalizedTime);
     if (index === -1) {
-      console.warn('Invalid time slot:', time);
+      console.warn('Invalid time slot:', time, 'Normalized:', normalizedTime);
+      invalidAppointments.push({ date, time, patientName, _id });
       return;
     }
 
     if (!matrix[normalizedDate]) matrix[normalizedDate] = {};
     matrix[normalizedDate][index] = { patientName, disorderType, status, createdAt, _id };
   });
+
+  if (invalidAppointments.length > 0) {
+    console.log('Invalid appointments:', invalidAppointments);
+    setInvalidAppointments(invalidAppointments);
+  }
 
   return matrix;
 };
@@ -94,6 +116,7 @@ const SlotMatrix = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [invalidAppointments, setInvalidAppointments] = useState([]);
   const token = localStorage.getItem('jwt');
 
   useEffect(() => {
@@ -106,7 +129,7 @@ const SlotMatrix = () => {
 
       try {
         setLoading(true);
-        const doctorStr = localStorage.getItem('doctor');   
+        const doctorStr = localStorage.getItem('doctor');
         if (!doctorStr) {
           throw new Error("No Doctor Name");
         }
@@ -144,7 +167,7 @@ const SlotMatrix = () => {
   }, [token]);
 
   // Memoize the appointments matrix
-  const appointmentsMatrix = useMemo(() => convertToMatrix(appointments), [appointments]);
+  const appointmentsMatrix = useMemo(() => convertToMatrix(appointments, setInvalidAppointments), [appointments]);
 
   const handleCellClick = (date, slotIndex, appointmentInfo) => {
     if (appointmentInfo) {
@@ -166,7 +189,7 @@ const SlotMatrix = () => {
     );
   }
 
-  if (!appointments.length && !error) {
+  if (!appointments.length && !error && !invalidAppointments.length) {
     return (
       <div className="p-4 text-center text-gray-600">
         No appointments found.
@@ -179,6 +202,19 @@ const SlotMatrix = () => {
       {error && (
         <div className="mb-4 p-3 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-lg">
           {error}
+        </div>
+      )}
+
+      {invalidAppointments.length > 0 && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <p>Warning: {invalidAppointments.length} appointments have invalid dates or time slots and are not displayed.</p>
+          <ul className="list-disc pl-5">
+            {invalidAppointments.map((app, idx) => (
+              <li key={idx}>
+                {app.patientName} on {app.date} at {app.time} (ID: {app._id})
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
@@ -247,10 +283,10 @@ const SlotMatrix = () => {
             <div>{selectedAppointment.disorderType || 'N/A'}</div>
             <div className="font-medium text-gray-700">Status:</div>
             <div className="capitalize">{selectedAppointment.status}</div>
-            <div className="font-medium text-gray-700">Created At:</div>
+            {/* <div className="font-medium text-gray-700">Created At:</div>
             <div>{formatTimestamp(selectedAppointment.createdAt)}</div>
             <div className="font-medium text-gray-700">Appointment ID:</div>
-            <div>{selectedAppointment._id}</div>
+            <div>{selectedAppointment._id}</div> */}
           </div>
         </div>
       )}

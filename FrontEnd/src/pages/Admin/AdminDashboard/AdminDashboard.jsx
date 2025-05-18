@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Clock, User, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import './AdminDashboard.css'
 
 export default function AdminDashboard() {
   const [patients, setPatients] = useState([]);
@@ -32,11 +33,11 @@ export default function AdminDashboard() {
         }
         
         const response = await fetch(`${BASE_URL}/api/admin/getAppointments`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          method: 'GET'
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
         });
         
         if (!response.ok) {
@@ -56,8 +57,37 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
-  const rejectAppointment = (patientName) => {
-    setPatients(prev => prev.filter(p => p.patientName !== patientName));
+  const rejectAppointment = async (patientName) => {
+    // console.log("Here" ,patientName);
+
+    try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/api/admin/rejectAppointment`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({patientName})
+        })
+
+        const data = await response.json();
+
+        if(!response.ok){
+            alert(data.msg);
+            setLoading(false)
+            return;
+        }
+
+        fetchData();
+        window.location.reload();
+
+    } catch (error) {
+        setError(error.msg);
+        setLoading(false)
+    }
+    
+    // setPatients(prev => prev.filter(p => p.patientName !== patientName));
   };
 
   // Handle selection of doctor in dropdown
@@ -84,7 +114,7 @@ export default function AdminDashboard() {
     const token = localStorage.getItem('jwt');
     if (!token) {
       setError('Authentication token not found');
-      navigate('/AdminLogin');
+      navigate('/AdminLogin', { replace: true });
       return;
     }
 
@@ -173,9 +203,9 @@ export default function AdminDashboard() {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-xl text-red-500">Error: {error}</div>
-      </div>
+        <div className="flex items-center justify-center h-screen">
+            <div className="text-xl text-red-500">Error: {error}</div>
+        </div>
     );
   }
 
@@ -198,7 +228,7 @@ export default function AdminDashboard() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointment Date</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointment Time</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disorder Type</th>
-                {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned Doctor</th> */}
+              
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -223,11 +253,7 @@ export default function AdminDashboard() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">{patient.disorderType}</div>
                   </td>
-                  {/* <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {patient.assignedDoctor ? patient.assignedDoctor : 'Not assigned'}
-                    </div>
-                  </td> */}
+        
                   <td className="px-6 py-4 whitespace-nowrap flex items-center space-x-2">
                     <select 
                       className="text-sm border border-gray-300 rounded p-1"
