@@ -75,6 +75,9 @@ export const getAppointments = async (req, res) => {
     const { doctorName } = req.body;
     
     const doctor = await doctorSchema.findOne({name: doctorName});
+    if(!doctorName){
+        return res.status(400).send({msg: `Doctor ${doctorName} not found!`})
+    }
 
     return res.status(201).send({appointments: doctor.appointments})
 }

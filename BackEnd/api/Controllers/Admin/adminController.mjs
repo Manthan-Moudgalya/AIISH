@@ -200,21 +200,12 @@ export const assignDoctor = async (req,res) => {
       
       return res.status(400).json({ message: 'Missing required fields' });
     }
-
-    const formatDate = (d) => {
-      const date = new Date(d);
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      return `${day}-${month}-${year}`;
-    };
-
     
     const newRequest = {
       patientName,
       time: appointmentTime,
       date: appointmentDate,
-      disorderType,
+      disorderType: disorderType,
       status: 'confirmed',
     }
 
@@ -246,9 +237,13 @@ export const assignDoctor = async (req,res) => {
     await admin.save();
     console.log("Successfully deleted records from admin");
 
+    doctor.appointments.map(item => {
+        console.log(JSON.stringify(item))
+    })
+
     // confirm
     console.log(`Successfully assigned ${patientName} to Doctor ${doctorName}`);
-    console.log("Remaining admin appointments:", admin.appointments);
+    // console.log("Remaining admin appointments:", admin.appointments);
 
     return res
       .status(200)
@@ -262,3 +257,38 @@ export const assignDoctor = async (req,res) => {
   }
 }
 
+export const rejectAppointment = async (req, res) => {
+    try{
+        await connectDB();
+        const { patientName } = req.body;
+        console.log("Patient name: " + patientName);
+        
+    
+        if(!patientName){
+            return res.status(400).send({msg: "undefined patient name"})
+        }
+
+        const admin = await adminSchema.findOne({
+        email: { $regex: new RegExp(`^${process.env.ADMIN_EMAIL}$`, 'i') }
+        });
+        if (!admin) return res.status(404).json({ message: 'Admin not found' });
+
+        admin.appointments = admin.appointments.filter(
+        a =>
+            !(
+                a.patientName === patientName
+            )
+        );
+
+        // save the admin changes
+        await admin.save();
+        console.log("Successfully rejected the appoinments!!");
+
+        return res.status(200).json({ msg: `Successfully rejected the Appoinment` });
+
+    } catch(error){
+
+        console.error('CREATE_APPT_ERROR:', error);
+        return res.status(500).json({ success: false, message: 'Server error while creating appointment' });
+    }
+}

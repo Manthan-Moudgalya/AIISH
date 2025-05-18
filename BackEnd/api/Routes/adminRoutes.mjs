@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { loginAdmin, verifyAdmin, patientAppointments, getAppointments, assignDoctor } 
+import { loginAdmin, verifyAdmin, patientAppointments, getAppointments, assignDoctor, rejectAppointment } 
                                   from '../Controllers/Admin/adminController.mjs';
 
 const router = Router();
@@ -19,6 +19,9 @@ router.post('/admin/appointments', patientAppointments);
 router.get('/admin/getAppointments', getAppointments);
 
 // Assign appointment 
-router.post('/admin/assignDoctor', assignDoctor)
+router.post('/admin/assignDoctor', assignDoctor);
+
+//Reject the appintment
+router.delete('/admin/rejectAppointment', rejectAppointment);
 
 export default router;

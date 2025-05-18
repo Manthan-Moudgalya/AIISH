@@ -22,6 +22,9 @@ const appointmentSchema = new mongoose.Schema({
     reason: {
       type: String,
     },
+    disorderType: {
+        type: String
+    },
     status: {
       type: String,
       enum: ['scheduled', 'confirmed', 'completed', 'cancelled'],
