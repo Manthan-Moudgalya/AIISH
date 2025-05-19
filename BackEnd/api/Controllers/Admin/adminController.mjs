@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 import connectDB from '../../Database/db.mjs';
 import doctorSchema from '../../Schema/doctorSchema.mjs'
-
+import patientSchema from '../../Schema/patientSchema.mjs'
+import { sendSMS } from '../../Utils/sendSMS.mjs';
 
 // Admin login controller
 export const loginAdmin = async (req, res) => {
@@ -177,6 +178,12 @@ export const getAppointments = async (req, res) => {
 }
 
 
+const formatDate = (dateStr) => {
+    const [month, day, year] = dateStr.split(/[-/]/);   // supports "-" or "/"
+    return `${day}-${month}-${year}`;
+} 
+
+
 export const assignDoctor = async (req,res) => {
   try{
     await connectDB();
@@ -219,6 +226,27 @@ export const assignDoctor = async (req,res) => {
     doctor.appointments.push(newRequest);
 
     await doctor.save();
+    
+    // Sending patient sms by twilio
+    // const patient = await patientSchema.findOne({patientName});
+    const patient = await patientSchema.findOne({
+        patientName: new RegExp(`^${patientName}$`, 'i')   
+    });
+
+    const patientPhoneNumber = patient.phoneNumber;
+
+    console.log(`PName: ${patient.patientName} Patient Number: ${patientPhoneNumber}`);
+
+    const formatappointmentDate = formatDate(appointmentDate);
+    const message =`Appointment booked to Dr ${doctorName} on Date: ${formatappointmentDate} and Time: ${appointmentTime}. Booking Link: ${process.env.ZOOM_MEETTING_LINK}`; 
+
+
+    // Send Message via Twilio API
+    sendSMS(`+91${patientPhoneNumber}`, message)
+        .then(msg => console.log('Message SID:', msg.sid))
+        .catch(console.error);
+
+
 
     const admin = await adminSchema.findOne({
       email: { $regex: new RegExp(`^${process.env.ADMIN_EMAIL}$`, 'i') }
@@ -235,14 +263,14 @@ export const assignDoctor = async (req,res) => {
 
     // save the admin changes
     await admin.save();
-    console.log("Successfully deleted records from admin");
+    // console.log("Successfully deleted records from admin");
 
     doctor.appointments.map(item => {
         console.log(JSON.stringify(item))
     })
 
     // confirm
-    console.log(`Successfully assigned ${patientName} to Doctor ${doctorName}`);
+    // console.log(`Successfully assigned ${patientName} to Doctor ${doctorName}`);
     // console.log("Remaining admin appointments:", admin.appointments);
 
     return res

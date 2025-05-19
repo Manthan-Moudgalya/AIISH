@@ -6,11 +6,13 @@ const Card = ({ title }) => {
 
   const handleClick = () => {
     if (title === 'Scheduling Appointment') {
-      navigate('/patientDashboard'); 
+        navigate('/patientDashboard'); 
     } else if( title === "Medical History"){
-      navigate('/PatientOverviewPage'); 
+        navigate('/PatientOverviewPage'); 
     } else if (title === 'Wellness Tips'){
         navigate('/WellnessTips')
+    } else if(title === "Shared Notes"){
+        navigate('/SharedNotes')
     }
   };
 

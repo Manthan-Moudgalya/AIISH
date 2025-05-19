@@ -12,6 +12,7 @@ import AdminLogin from './pages/Admin/AdminLogin.jsx';
 import AdminDashboard from './pages/Admin/AdminDashBoard/AdminDashboard.jsx';
 import PatientOverviewPage from './Main/PatientOverviewPage.jsx';
 import WellnessTips from './Main/WellnessTips.jsx';
+import SharedNotes from './Main/Components/SharedNotes.jsx'
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/PatientDashboard" element={<PatientDashboard/>} />
             <Route path="/PatientOverviewPage" element={<PatientOverviewPage/>} />
             <Route path="/WellnessTips" element={<WellnessTips/>} />
+            <Route path="/SharedNotes" element={<SharedNotes/>} />
 
             <Route path="/DoctorSignup" element={<DoctorSignup/>} />
             <Route path="/DoctorLogin" element={<DoctorLogin/>} />
