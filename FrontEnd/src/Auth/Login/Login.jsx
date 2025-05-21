@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 import eyeClose from './images/eye-close.png'
 import eyeOpen from './images/eye-open.png'
 import './Login.css'
-// import dotenv from 'dotenv';
-
-// dotenv.config();
 
 
 function Login() {

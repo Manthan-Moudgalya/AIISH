@@ -1,6 +1,6 @@
 /* index.css or SharedNotes.module.css */
 
-.container {
+.shared-container {
   background: #fff;
   width: 90%;
   max-width: 800px;
@@ -22,7 +22,7 @@ h2 {
 }
 
 /* Form Controls */
-input[type="text"],
+.noteTitle,
 textarea,
 input[type="file"] {
   width: 100%;
@@ -38,8 +38,8 @@ input[type="file"] {
 
 input[type="text"]:focus,
 textarea:focus {
-  border-color: #4b6cb7;
-  box-shadow: 0 0 4px rgba(75, 108, 183, 0.4);
+  border-color: #ffffff;
+  box-shadow: 0 0 4px rgba(97, 97, 97, 0.4);
 }
 
 /* Save Button */

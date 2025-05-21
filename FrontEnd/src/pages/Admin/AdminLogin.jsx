@@ -61,6 +61,7 @@ const AdminLogin = () => {
               placeholder="Email"
               value={form.email}
               onChange={handleChange}
+              id="admin-login-email"
               required
             />
           </div>
@@ -71,6 +72,7 @@ const AdminLogin = () => {
               name="password"
               placeholder="Password"
               value={form.password}
+              id='admin-login-pass'
               onChange={handleChange}
               required
             />
@@ -78,9 +80,10 @@ const AdminLogin = () => {
               type="button" 
               className="toggle-password"
               onClick={togglePasswordVisibility}
+              id='admin-eye'
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <EyeOff size={25} /> : <Eye size={25} />}
             </button>
           </div>
           

@@ -84,6 +84,27 @@
   place-items: center ;
 }
 
+#doc-inp{
+    width: 70%;
+}
+
+input[type="text"]:focus{
+    border: 2px solid white;
+    outline: none;
+}
+
+#doc-sign-up{
+    width: 70%;
+    border: 2px solid white;
+    position: relative;
+}
+
+#doc-sign-eye{
+    position: absolute;
+    right: 100px;
+    border: none;
+    outline: none;
+}
 
 .input-group input {
   width: 100%;

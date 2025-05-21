@@ -20,92 +20,111 @@ export default function AdminDashboard() {
     return formatted;
   };
 
-  // Fetch appointments and doctors data from the API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // Get the JWT token from localStorage
-        const token = localStorage.getItem('jwt');
-        
-        if (!token) {
-          throw new Error('Authentication token not found');
-        }
-        
-        const response = await fetch(`${BASE_URL}/api/admin/getAppointments`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET'
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch appointments data');
-        }
-        const data = await response.json();
-        setPatients(data.appointments);
-        setDoctors(data.doctors);
-        setLoading(false);
-        
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+  // Generate a unique ID for each appointment to handle multiple requests from the same patient
+  const generateAppointmentId = (patient) => {
+    return `${patient.patientName}-${patient.date}-${patient.time}`;
+  };
 
+  // Fetch appointments and doctors data from the API
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      // Get the JWT token from localStorage
+      const token = localStorage.getItem('jwt');
+      
+      if (!token) {
+        throw new Error('Authentication token not found');
+      }
+      
+      const response = await fetch(`${BASE_URL}/api/admin/getAppointments`, {
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          },
+          method: 'GET'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch appointments data');
+      }
+      const data = await response.json();
+      
+      // Add unique IDs to each appointment
+      const appointmentsWithIds = data.appointments.map(appointment => ({
+        ...appointment,
+        appointmentId: generateAppointmentId(appointment)
+      }));
+      
+      setPatients(appointmentsWithIds);
+      setDoctors(data.doctors);
+      setLoading(false);
+      
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
-  const rejectAppointment = async (patientName) => {
-    // console.log("Here" ,patientName);
-
+  const rejectAppointment = async (patientObj) => {
     try {
-        setLoading(true);
-        const response = await fetch(`${BASE_URL}/api/admin/rejectAppointment`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({patientName})
-        })
+      setLoading(true);
+      
+      // Get the JWT token from localStorage
+      const token = localStorage.getItem('jwt');
+      
+      if (!token) {
+        throw new Error('Authentication token not found');
+      }
+      
+      const response = await fetch(`${BASE_URL}/api/admin/rejectAppointment`, {
+          method: 'DELETE',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            patientName: patientObj.patientName,
+            appointmentDate: formatDate(patientObj.date),
+            appointmentTime: patientObj.time
+          })
+      });
 
-        const data = await response.json();
+      const data = await response.json();
 
-        if(!response.ok){
-            alert(data.msg);
-            setLoading(false)
-            return;
-        }
-
-        fetchData();
-        window.location.reload();
-
+      if (!response.ok) {
+        alert(data.msg || 'Error rejecting appointment');
+        setLoading(false);
+        return;
+      }
+      
+      // Success - refresh data instead of modifying state directly
+      alert('Appointment rejected successfully');
+      await fetchData(); // Refresh data from server
+      
     } catch (error) {
-        setError(error.msg);
-        setLoading(false)
+      console.error('Error rejecting appointment:', error);
+      setError(error.message || 'Error rejecting appointment');
+      setLoading(false);
     }
-    
-    // setPatients(prev => prev.filter(p => p.patientName !== patientName));
   };
 
   // Handle selection of doctor in dropdown
-  const handleDoctorSelection = (patientName, doctorName) => {
+  const handleDoctorSelection = (appointmentId, doctorName) => {
     setSelectedDoctors(prev => ({
       ...prev,
-      [patientName]: doctorName
+      [appointmentId]: doctorName
     }));
   };
 
   // Assign doctor when the button is clicked
   const assignDoctor = async (patientObj) => {
-    const doctorName = selectedDoctors[patientObj.patientName];
+    const appointmentId = patientObj.appointmentId;
+    const doctorName = selectedDoctors[appointmentId];
     
-    console.log("Doctor Name: " + doctorName);
-    console.log(JSON.stringify(patientObj, null, 2));
-        
-
     if (!doctorName) {
       alert("Please select a doctor first");
       return;
@@ -119,6 +138,7 @@ export default function AdminDashboard() {
     }
 
     try {
+      setLoading(true);
       // Get the full doctor object to send more details if needed
       const selectedDoctor = doctors.find(doc => doc.name === doctorName);
       
@@ -129,7 +149,7 @@ export default function AdminDashboard() {
       const res = await fetch(`${BASE_URL}/api/admin/assignDoctor`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -138,35 +158,41 @@ export default function AdminDashboard() {
           appointmentDate: formatDate(patientObj.date),
           patientReason: patientObj.reason || '',
           disorderType: patientObj.disorderType || '',
-          doctorName: doctorName, // Use the name consistently
+          doctorName: doctorName
         }),
       });
 
+      const responseData = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.message || 'Failed to assign doctor');
+        throw new Error(responseData.message || 'Failed to assign doctor');
       }
 
-      // Remove patient from UI after successful backend confirmation
-      setPatients(prev => prev.filter(p => p.patientName !== patientObj.patientName));
+      // Success - refresh data from server instead of manipulating state directly
+      alert(`Successfully assigned ${patientObj.patientName} to Dr. ${doctorName} for appointment on ${formatDate(patientObj.date)} at ${patientObj.time}`);
       
-      // Also clear the selection
-      const newSelections = {...selectedDoctors};
-      delete newSelections[patientObj.patientName];
-      setSelectedDoctors(newSelections);
-
-      alert(`Successfully assigned ${patientObj.patientName} to Dr. ${doctorName}`);
+      // Refresh data from server to get the updated list of appointments
+      await fetchData();
+      
+      // Also clear the selection for this appointment
+      setSelectedDoctors(prev => {
+        const newSelections = {...prev};
+        delete newSelections[appointmentId];
+        return newSelections;
+      });
+      
     } catch (err) {
-      console.error(err);
+      console.error('Error assigning doctor:', err);
       alert(`Error: ${err.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const logOut = () => {
     localStorage.removeItem('jwt');
     localStorage.removeItem('admin');
-    navigate("/AdminLogin",{ replace: true });
-    window.location.reload();
+    navigate("/AdminLogin", { replace: true });
   };
 
   // Function to check if a doctor is available on a specific date and time
@@ -213,7 +239,7 @@ export default function AdminDashboard() {
     <div className='hello'>
       <header className="dashboard-header">
         <div className="admin-info">
-          <h1>Admin Dashboard</h1>
+          <span className='text-[2em] font-medium'>Admin Dashboard</span>
         </div>
         <button className="logout-button" onClick={logOut}>Log Out</button>
       </header>
@@ -228,13 +254,12 @@ export default function AdminDashboard() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointment Date</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appointment Time</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Disorder Type</th>
-              
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {patients.length > 0 ? patients.map((patient) => (
-                <tr key={patient.patientName}>
+                <tr key={patient.appointmentId}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <User size={16} className="mr-2 text-gray-500" />
@@ -257,8 +282,8 @@ export default function AdminDashboard() {
                   <td className="px-6 py-4 whitespace-nowrap flex items-center space-x-2">
                     <select 
                       className="text-sm border border-gray-300 rounded p-1"
-                      value={selectedDoctors[patient.patientName] || ""}
-                      onChange={(e) => handleDoctorSelection(patient.patientName, e.target.value)}
+                      value={selectedDoctors[patient.appointmentId] || ""}
+                      onChange={(e) => handleDoctorSelection(patient.appointmentId, e.target.value)}
                     >
                       <option value="">Select Doctor</option>
                       {doctors.filter(doctor => {
@@ -286,19 +311,20 @@ export default function AdminDashboard() {
                     
                     <button 
                       onClick={() => assignDoctor(patient)}
-                      disabled={!selectedDoctors[patient.patientName]}
+                      disabled={!selectedDoctors[patient.appointmentId] || loading}
                       className={`px-3 py-1 rounded text-white text-sm ${
-                        selectedDoctors[patient.patientName] 
+                        selectedDoctors[patient.appointmentId] && !loading
                           ? 'bg-green-500 hover:bg-green-600' 
                           : 'bg-gray-300 cursor-not-allowed'
                       }`}
                     >
-                      Assign
+                      {loading ? 'Assigning...' : 'Assign'}
                     </button>
                     
                     <button 
-                      onClick={() => rejectAppointment(patient.patientName)}
-                      className="p-1 bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors"
+                      onClick={() => rejectAppointment(patient)}
+                      disabled={loading}
+                      className={`p-1 ${loading ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-red-100 text-red-600 hover:bg-red-200'} rounded transition-colors`}
                       title="Reject Appointment"
                     >
                       <Trash2 size={16} />

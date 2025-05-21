@@ -16,18 +16,19 @@ const PatientDashboard = () => {
   const navigate = useNavigate();
   
   const timeSlots = [
-    '09:00 - 09:45 AM', '9:45 - 10:30 AM', '10:30 - 11:15 AM', '11:30 - 12:45 PM', '12:15 - 1:00 PM',
+    '09:00 - 09:45 AM', '9:45 - 10:30 AM', '10:30 - 11:15 AM', '11:30 - 12:15 PM', '12:15 - 1:00 PM',
     '02:00 - 02:45 PM', '02:45 - 3:30 PM', '03:45 - 4:30 PM', '04:30 - 5:15 PM'
   ];
   
   const disorderTypes = [
-    'Articulation Disorders',
-    'Language Disorders',
-    'Cognitive-Communication Disorders',
-    'Social Communication Disorders',
-    'Speech Impairments',
-    'Swallowing Disorders',
-    'Voice Disorders'
+    'First visit',
+    'Articulation Problem',
+    'Language Problem',
+    'Cognitive-Communication Problem',
+    'Social Communication Problem',
+    'Speech Impairments Problem',
+    'Swallowing Problem',
+    'Voice Problem'
   ];
 
   // Base URL for API requests - replace with your actual base URL
@@ -102,7 +103,7 @@ const PatientDashboard = () => {
           setPaymentDone(true);
           
           // Provide feedback to the user
-          alert('Appointment booked successfully!');
+          alert('Appointment Requested Successfully!');
           
           // Optional: Navigate to a confirmation page or appointment list
           navigate('/HomePage', { replace: true });
@@ -168,7 +169,7 @@ const PatientDashboard = () => {
             onChange={(e) => setSelectedTime(e.target.value)}
             className='text-center'
           >
-            <option value="">-- Select Time --</option>
+            <option>-- Select Time --</option>
             {timeSlots.map((slot) => (
               <option key={slot} value={slot}>{slot}</option>
             ))}
@@ -182,7 +183,7 @@ const PatientDashboard = () => {
             onChange={(e) => setSelectedDisorder(e.target.value)}
             className='text-center'
           >
-            <option value="">-- Select Disorder Type --</option>
+            <option value="">-- Select Problem Type --</option>
             {disorderTypes.map((disorder) => (
               <option key={disorder} value={disorder}>{disorder}</option>
             ))}
@@ -199,7 +200,7 @@ const PatientDashboard = () => {
               className="submit-button"
               disabled={isLoading}
             >
-              {isLoading ? 'Processing...' : 'Pay & Book Appointment'}
+              {isLoading ? 'Processing...' : 'Book Appointment'}
             </button>
           )}
         </div>

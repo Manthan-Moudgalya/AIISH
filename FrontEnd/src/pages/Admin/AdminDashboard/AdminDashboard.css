@@ -7,6 +7,17 @@
   cursor: pointer;
 }
 
+.admin-info{
+    position: absolute;
+    left: 40%;
+}
+
+.dashboard-header{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
 .hello{
   width: 100vw;
   height: 100vh ;

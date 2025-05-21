@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const timeSlots = [
   '09:00 - 09:45 AM', '09:45 - 10:30 AM', '10:30 - 11:15 AM', '11:30 - 12:15 PM',
@@ -78,6 +79,7 @@ const normalizeTimeSlot = (time) => {
   );
 };
 
+
 // Convert appointments to matrix
 const convertToMatrix = (appointments, setInvalidAppointments) => {
   const matrix = {};
@@ -118,6 +120,12 @@ const SlotMatrix = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [invalidAppointments, setInvalidAppointments] = useState([]);
   const token = localStorage.getItem('jwt');
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/medicalRecords');
+  };
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -252,6 +260,7 @@ const SlotMatrix = () => {
                       <div className="text-xs font-medium truncate" style={{ color: status === 'available' ? '#6B7280' : '#FFFFFF' }}>
                         {appointmentInfo ? appointmentInfo.patientName : 'Available'}
                       </div>
+
                     </td>
                   );
                 })}
@@ -263,31 +272,45 @@ const SlotMatrix = () => {
 
       {selectedAppointment && (
         <div className="mt-6 p-5 border border-gray-200 rounded-lg bg-white shadow-sm">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-lg font-semibold text-gray-800">Appointment Details</h3>
+            <div className="flex justify-between items-center mb-3">
+                <h3 className="text-lg font-semibold text-gray-800">Appointment Details</h3>
+                <button
+                className="text-sm text-blue-600 hover:underline"
+                onClick={() => setSelectedAppointment(null)}
+                >
+                Close
+                </button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                <div className="font-medium text-gray-700">Date:</div>
+                <div>{formatDisplayDate(selectedAppointment.date)}</div>
+                <div className="font-medium text-gray-700">Time:</div>
+                <div>{selectedAppointment.time}</div>
+                <div className="font-medium text-gray-700">Patient:</div>
+                <div>{selectedAppointment.patientName}</div>
+                <div className="font-medium text-gray-700">Disorder Type:</div>
+                <div>{selectedAppointment.disorderType || 'N/A'}</div>
+                <div className="font-medium text-gray-700">Status:</div>
+                <div className="capitalize">{selectedAppointment.status}</div>
+            </div>
+
             <button
-              className="text-sm text-blue-600 hover:underline"
-              onClick={() => setSelectedAppointment(null)}
-            >
-              Close
+                onClick={handleClick}
+                className='mt-[20px]'
+                style={{
+                    backgroundColor: '#add8e6', // light blue
+                    color: '#000',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'semibold'
+                }}
+                >
+                Create Record
             </button>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <div className="font-medium text-gray-700">Date:</div>
-            <div>{formatDisplayDate(selectedAppointment.date)}</div>
-            <div className="font-medium text-gray-700">Time:</div>
-            <div>{selectedAppointment.time}</div>
-            <div className="font-medium text-gray-700">Patient:</div>
-            <div>{selectedAppointment.patientName}</div>
-            <div className="font-medium text-gray-700">Disorder Type:</div>
-            <div>{selectedAppointment.disorderType || 'N/A'}</div>
-            <div className="font-medium text-gray-700">Status:</div>
-            <div className="capitalize">{selectedAppointment.status}</div>
-            {/* <div className="font-medium text-gray-700">Created At:</div>
-            <div>{formatTimestamp(selectedAppointment.createdAt)}</div>
-            <div className="font-medium text-gray-700">Appointment ID:</div>
-            <div>{selectedAppointment._id}</div> */}
-          </div>
+
         </div>
       )}
 

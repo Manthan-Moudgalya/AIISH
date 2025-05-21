@@ -74,6 +74,7 @@ const DoctorSignup = () => {
                 placeholder="Full Name"
                 value={form.name}
                 onChange={handleChange}
+                id='doc-inp'
                 required
               />
             </div>
@@ -82,6 +83,7 @@ const DoctorSignup = () => {
               <input
                 type="email"
                 name="email"
+                id='doc-inp'
                 placeholder="Email"
                 value={form.email}
                 onChange={handleChange}
@@ -109,12 +111,14 @@ const DoctorSignup = () => {
                 placeholder="Password"
                 value={form.password}
                 onChange={handleChange}
+                id="doc-sign-up"
                 required
               />
               <button
                 type="button"
                 className="toggle-password"
                 onClick={togglePasswordVisibility}
+                id='doc-sign-eye'
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}

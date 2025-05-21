@@ -61,6 +61,7 @@ const DoctorLogin = () => {
               placeholder="Email"
               value={form.email}
               onChange={handleChange}
+              id="doctor-login"
               required
             />
           </div>
@@ -72,15 +73,17 @@ const DoctorLogin = () => {
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
+              id='doctor-login-pass'
               required
             />
             <button 
               type="button" 
               className="toggle-password"
+              id='doc-eye'
               onClick={togglePasswordVisibility}
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <EyeOff size={25} /> : <Eye size={25} />}
             </button>
           </div>
           

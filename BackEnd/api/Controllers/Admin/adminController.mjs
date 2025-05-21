@@ -246,20 +246,25 @@ export const assignDoctor = async (req,res) => {
         .then(msg => console.log('Message SID:', msg.sid))
         .catch(console.error);
 
-
-
     const admin = await adminSchema.findOne({
       email: { $regex: new RegExp(`^${process.env.ADMIN_EMAIL}$`, 'i') }
     });
+    
     if (!admin) return res.status(404).json({ message: 'Admin not found' });
 
     // remove the appointment from admin’s list
-    admin.appointments = admin.appointments.filter(
-      a =>
-        !(
-          a.patientName === patientName
-        )
-    );
+    admin.appointments = admin.appointments.filter(a =>{
+        const bN = a.patientName === patientName  
+        const bD = normalizeDate(a.date) === appointmentDate  
+        const bT = a.time === appointmentTime
+
+        console.log({
+            norm: normalizeDate(a.date),
+            appoint: appointmentDate
+        });
+        
+        return !(bN && bT && bD)
+    });
 
     // save the admin changes
     await admin.save();
@@ -270,7 +275,7 @@ export const assignDoctor = async (req,res) => {
     })
 
     // confirm
-    // console.log(`Successfully assigned ${patientName} to Doctor ${doctorName}`);
+    console.log(`Successfully assigned ${patientName} to Doctor ${doctorName}`);
     // console.log("Remaining admin appointments:", admin.appointments);
 
     return res
@@ -285,28 +290,51 @@ export const assignDoctor = async (req,res) => {
   }
 }
 
+const normalizeDate = (dateStr) => {
+
+    const date = new Date(dateStr);
+
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getUTCFullYear();
+
+    return `${day}-${month}-${year}`;
+} 
+
 export const rejectAppointment = async (req, res) => {
     try{
         await connectDB();
-        const { patientName } = req.body;
+        const { patientName, appointmentDate, appointmentTime } = req.body;
         console.log("Patient name: " + patientName);
         
     
         if(!patientName){
-            return res.status(400).send({msg: "undefined patient name"})
+            return res.status(404).send({msg: "patient not found"})
         }
+
+        console.log('Comparing with:', {
+            patientName,
+            appointmentDate,
+            appointmentTime,
+        });
 
         const admin = await adminSchema.findOne({
         email: { $regex: new RegExp(`^${process.env.ADMIN_EMAIL}$`, 'i') }
         });
         if (!admin) return res.status(404).json({ message: 'Admin not found' });
 
-        admin.appointments = admin.appointments.filter(
-        a =>
-            !(
-                a.patientName === patientName
-            )
-        );
+        admin.appointments = admin.appointments.filter(a =>{
+            const bN = a.patientName === patientName  
+            const bD = normalizeDate(a.date) === appointmentDate  
+            const bT = a.time === appointmentTime
+
+            console.log({
+                norm: normalizeDate(a.date),
+                appoint: appointmentDate
+            });
+            
+            return !(bN && bT && bD)
+        });
 
         // save the admin changes
         await admin.save();

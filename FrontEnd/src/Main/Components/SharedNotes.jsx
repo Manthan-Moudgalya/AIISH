@@ -83,7 +83,7 @@ function SharedNotes() {
 
   return (
     <div>
-      <div className="container">
+      <div className="shared-container">
         <h2>📝 Shared Notes</h2>
 
         <div className="mb-3">

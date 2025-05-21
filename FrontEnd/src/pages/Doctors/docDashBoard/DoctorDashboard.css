@@ -46,3 +46,8 @@
 .appointments-table th {
   background-color: #eeeeee;
 }
+
+.doctor-info{
+    position: absolute;
+    left: 30px;
+}

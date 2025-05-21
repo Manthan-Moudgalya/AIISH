@@ -74,7 +74,7 @@ const HomePage = () => {
             <div className="text-center">
               <h2 className="text-2xl font-semibold text-gray-800">Welcome, {userData.name}!</h2>
               {/* Render user data as needed */}
-              <p className="mt-2 text-gray-600">Your upcoming appointments and health information are ready for review.</p>
+              <p className="mt-2 text-gray-600"><strong className="text-red-500">Project Developed as a part of AIISH-HAT 25 by <br />6th semester (Computer Science Enginerring) Students from <br />Maharaja Institute Of Technology, Mysuru</strong></p>
             </div>
           ) : error ? (
             <p className="text-red-500 text-center">{error}</p>
@@ -88,4 +88,3 @@ const HomePage = () => {
 };
 
 export default HomePage; 
-

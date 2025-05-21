@@ -13,6 +13,8 @@ import AdminDashboard from './pages/Admin/AdminDashBoard/AdminDashboard.jsx';
 import PatientOverviewPage from './Main/PatientOverviewPage.jsx';
 import WellnessTips from './Main/WellnessTips.jsx';
 import SharedNotes from './Main/Components/SharedNotes.jsx'
+import MedicalRecords from './pages/Doctors/MedicalRecords.jsx'
+
 
 function App() {
     return (
@@ -30,6 +32,7 @@ function App() {
             <Route path="/DoctorSignup" element={<DoctorSignup/>} />
             <Route path="/DoctorLogin" element={<DoctorLogin/>} />
             <Route path="/DoctorDashBoard" element={<DoctorDashBoard/>} />
+            <Route path="/medicalRecords" element={<MedicalRecords/>} />
 
             <Route path="/AdminLogin" element={<AdminLogin/>} />
             <Route path="/AdminDashboard" element={<AdminDashboard/>} />
