@@ -46,7 +46,7 @@ const AdminLogin = () => {
       <div id="login-container">
       <span className='heading'>Admin Login</span>
         <div className="login-form">
-          <h2>Doctor Login</h2>
+          {/* <h2>Doctor Login</h2> */}
           
           {error && (
             <div className="error-alert">

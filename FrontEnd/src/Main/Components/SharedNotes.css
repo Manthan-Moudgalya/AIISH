@@ -2,29 +2,20 @@
 
 .shared-container {
   background: #fff;
-  width: 90%;
-  max-width: 800px;
+  width: 900px;
+  display: grid;
+  place-items: center;
+  gap: 20px;
+  /* border: 2px solid red; */
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* Header */
-h2 {
-  background: linear-gradient(to right, #4b6cb7, #182848);
-  color: white;
-  padding: 15px 25px;
-  border-radius: 12px;
-  text-align: center;
-  margin-bottom: 30px;
-  font-weight: 600;
-  font-size: 28px;
-}
 
 /* Form Controls */
 .noteTitle,
-textarea,
-input[type="file"] {
+textarea{
   width: 100%;
   padding: 12px 16px;
   margin-bottom: 15px;
@@ -36,14 +27,25 @@ input[type="file"] {
   transition: 0.3s;
 }
 
+#noteContent{
+    width: 80%;
+    height: 150px;
+    text-align: center;
+}
+
 input[type="text"]:focus,
-textarea:focus {
+#noteContent:focus {
   border-color: #ffffff;
   box-shadow: 0 0 4px rgba(97, 97, 97, 0.4);
 }
 
-/* Save Button */
-.btn-save {
+#imageInput{
+    display: grid;
+    place-items: center;
+}
+ 
+
+.btn-primary {
   display: inline-block;
   background: linear-gradient(to right, #4b6cb7, #182848);
   color: white;
@@ -62,12 +64,14 @@ textarea:focus {
 
 /* Notes List */
 .note-card {
-  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+  background: linear-gradient(to right, #f5f7fa, #cde0ff);
   padding: 20px;
-  border-left: 5px solid #007bff;
   border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 20em;
   margin-bottom: 15px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  display: grid;
+  place-items: center;
 }
 
 .note-card img {
