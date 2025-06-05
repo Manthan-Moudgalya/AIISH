@@ -95,8 +95,12 @@ input[type="text"]:focus{
 
 #doc-sign-up{
     width: 70%;
-    border: 2px solid white;
     position: relative;
+
+}
+#docType{
+    border: none;
+    outline: none;
 }
 
 #doc-sign-eye{

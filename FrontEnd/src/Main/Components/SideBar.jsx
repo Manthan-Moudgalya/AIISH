@@ -3,10 +3,15 @@ import { X } from 'lucide-react';
 
 const Sidebar = ({ onClose }) => {
 
-  const logOut = () => {
-      localStorage.removeItem('token');
-      window.location.reload(); 
-  }
+    const logOut = () => {
+        localStorage.removeItem('token');
+        window.location.reload(); 
+    }
+
+    const handleRecordings = () => {
+        window.location.href = "https://aiish-zoom.vercel.app/";
+    }
+
   
   return(
     <div className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 p-6 transition-all">
@@ -17,6 +22,7 @@ const Sidebar = ({ onClose }) => {
       <ul className="space-y-4">
         <li className="hover:text-blue-600 cursor-pointer">My Profile</li>
         <li className="hover:text-blue-600 cursor-pointer">Settings</li>
+        <li className="hover:text-blue-600 cursor-pointer" onClick={handleRecordings}>Recordings</li>
         <li className="hover:text-blue-600 cursor-pointer" onClick={logOut}>Logout</li>
       </ul>
     </div>

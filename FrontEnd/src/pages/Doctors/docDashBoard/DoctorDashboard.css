@@ -50,4 +50,10 @@
 .doctor-info{
     position: absolute;
     left: 30px;
+    font-size: 25px;
+}
+
+.heading{
+    position: absolute;
+    left: 500px;
 }

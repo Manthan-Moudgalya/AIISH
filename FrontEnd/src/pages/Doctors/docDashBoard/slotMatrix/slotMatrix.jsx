@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const timeSlots = [
@@ -120,12 +120,17 @@ const SlotMatrix = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [invalidAppointments, setInvalidAppointments] = useState([]);
   const token = localStorage.getItem('jwt');
-
+  const sectionRef = useRef();
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate('/medicalRecords');
   };
+
+//   const scrollToSection = () => {
+//     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+//   };
+
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -134,6 +139,7 @@ const SlotMatrix = () => {
         setLoading(false);
         return;
       }
+      
 
       try {
         setLoading(true);
@@ -177,17 +183,28 @@ const SlotMatrix = () => {
   // Memoize the appointments matrix
   const appointmentsMatrix = useMemo(() => convertToMatrix(appointments, setInvalidAppointments), [appointments]);
 
-  const handleCellClick = (date, slotIndex, appointmentInfo) => {
-    if (appointmentInfo) {
-      setSelectedAppointment({
-        date,
-        time: timeSlots[slotIndex],
-        ...appointmentInfo
-      });
-    } else {
-      setSelectedAppointment(null);
-    }
-  };
+    const handleCellClick = (date, slotIndex, appointmentInfo) => {
+        if (appointmentInfo) {
+        setSelectedAppointment({
+            date,
+            time: timeSlots[slotIndex],
+            ...appointmentInfo
+        });
+        window.location.href = "#sectionRef";
+
+        } else {
+        setSelectedAppointment(null);
+        }
+    };
+
+  const handleSharedNotes = () => {
+    navigate("/SharedNotes");
+  }
+
+  const handleRecordings= () => {
+    window.location.href = "https://aiish-zoom.vercel.app/";
+  }
+
 
   if (loading) {
     return (
@@ -281,7 +298,7 @@ const SlotMatrix = () => {
                 Close
                 </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm" id="sectionRef">
                 <div className="font-medium text-gray-700">Date:</div>
                 <div>{formatDisplayDate(selectedAppointment.date)}</div>
                 <div className="font-medium text-gray-700">Time:</div>
@@ -305,10 +322,46 @@ const SlotMatrix = () => {
                     borderRadius: '8px',
                     cursor: 'pointer',
                     fontSize: '16px',
-                    fontWeight: 'semibold'
+                    fontWeight: 'semibold', 
+                    marginRight: "15px"
                 }}
                 >
                 Create Record
+            </button>
+
+            <button
+                onClick={handleSharedNotes}
+                className='mt-[20px]'
+                style={{
+                    backgroundColor: '#add8e6', 
+                    color: '#000',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'semibold',
+                    marginRight: "15px"
+                }}
+                >
+                Shared Notes
+            </button>
+
+            <button
+                onClick={handleRecordings}
+                className='mt-[20px]'
+                style={{
+                    backgroundColor: '#add8e6', 
+                    color: '#000',
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'semibold'
+                }}
+                >
+                Recordings
             </button>
 
         </div>
