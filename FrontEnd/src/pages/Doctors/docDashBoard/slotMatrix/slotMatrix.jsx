@@ -127,9 +127,11 @@ const SlotMatrix = () => {
     navigate('/medicalRecords');
   };
 
-//   const scrollToSection = () => {
-//     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
-//   };
+  useEffect(() => {
+    if (selectedAppointment && sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [selectedAppointment]);
 
 
   useEffect(() => {
@@ -298,7 +300,8 @@ const SlotMatrix = () => {
                 Close
                 </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm" id="sectionRef">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"
+                                id="sectionRef" ref={sectionRef}>
                 <div className="font-medium text-gray-700">Date:</div>
                 <div>{formatDisplayDate(selectedAppointment.date)}</div>
                 <div className="font-medium text-gray-700">Time:</div>
