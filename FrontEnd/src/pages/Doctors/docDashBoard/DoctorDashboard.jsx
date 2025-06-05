@@ -24,7 +24,7 @@ const DoctorDashboard = () => {
         <div className="doctor-info">
           <p><strong>Name:</strong> {doctorInfo?.name}</p>
         </div>
-        <div className="heading flex justify-center align-center">
+        <div className="heading-doc flex justify-center align-center">
             <span className='text-[.75em] font-semibold'>Doctor Dashboard</span>
         </div>
         <button className="bg-blue-700 p-2 rounded-[5px] mr-[20px]" onClick={handleTherapy}>Pre-Post-Therapy</button>
