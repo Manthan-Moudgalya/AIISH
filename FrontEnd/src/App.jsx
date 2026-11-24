@@ -9,7 +9,7 @@ import DoctorLogin from './pages/Doctors/DoctorLogin.jsx';
 import DoctorSignup from './pages/Doctors/DoctorSignup.jsx';
 import DoctorDashBoard from './pages/Doctors/docDashBoard/DoctorDashboard.jsx'
 import AdminLogin from './pages/Admin/AdminLogin.jsx';
-import AdminDashboard from './pages/Admin/AdminDashBoard/AdminDashboard.jsx';
+import AdminDashboard from './pages/Admin/AdminDashboard/AdminDashboard.jsx';
 import PatientOverviewPage from './Main/PatientOverviewPage.jsx';
 import WellnessTips from './Main/WellnessTips.jsx';
 import SharedNotes from './Main/Components/SharedNotes.jsx'
